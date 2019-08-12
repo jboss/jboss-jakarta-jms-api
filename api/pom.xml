@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (c) 2017, 2018 Oracle and/or its affiliates. All rights reserved.
@@ -29,6 +30,10 @@
     <packaging>jar</packaging>
 
     <name>Jakarta Messaging API</name>
+    <description>
+        Jakarta Messaging describes a means for Java applications to create, send, 
+        and receive messages via loosely coupled, reliable asynchronous communication services.
+    </description>
 
     <licenses>
         <license>
