@@ -34,6 +34,7 @@
         Jakarta Messaging describes a means for Java applications to create, send, 
         and receive messages via loosely coupled, reliable asynchronous communication services.
     </description>
+    <url>https://github.com/jboss/jboss-jakarta-jms-api</url>
 
     <licenses>
         <license>
@@ -47,6 +48,17 @@
             <distribution>repo</distribution>
         </license>
    </licenses>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://issues.jboss.org/projects/JBEE/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:ssh://git@github.com/jboss/jboss-jakarta-jms-api.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/jboss/jboss-jakarta-jms-api.git</developerConnection>
+        <url>https://github.com/jboss/jboss-jakarta-jms-api</url>
+    </scm>
 
     <properties>
         <!--
@@ -67,52 +79,13 @@
         <spec.version>2.0</spec.version>
         <spec.newVersion>2.1</spec.newVersion>
         <spec.build>01</spec.build>
-        <spec.impl.version>2.0.3</spec.impl.version>
+        <spec.impl.version>${version}</spec.impl.version>
         <spec.extension.name>javax.jms</spec.extension.name>
         <spec.non.final>false</spec.non.final>
         <spec.api.package>jakarta.jms</spec.api.package>
     </properties>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.0.0-M2</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.glassfish.build</groupId>
-                    <artifactId>spec-version-maven-plugin</artifactId>
-                    <version>1.5</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>maven-bundle-plugin</artifactId>
-                    <version>3.5.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.0.1</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
 
         <resources>
              <resource>
@@ -144,49 +117,34 @@
             </plugin>
 
             <plugin>
-                <groupId>org.glassfish.build</groupId>
-                <artifactId>spec-version-maven-plugin</artifactId>
-                <configuration>
-                    <specMode>jakarta</specMode>
-                    <spec>
-                        <nonFinal>${spec.non.final}</nonFinal>
-                        <jarType>api</jarType>
-                        <specVersion>${spec.version}</specVersion>
-                        <specBuild>${spec.build}</specBuild>
-                        <specImplVersion>${spec.impl.version}</specImplVersion>
-                        <apiPackage>${spec.api.package}</apiPackage>
-                        <newSpecVersion>${spec.new.spec.version}</newSpecVersion>
-                    </spec>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>set-spec-properties</goal>
-                            <!-- TODO:
-                            glassfish-spec-version-maven-plugin needs to be updated
-                            in order to check 'jakarta.' prefixed values in manifest entries
-                            -->
-                            <!--<goal>check-module</goal>-->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Automatic-Module-Name>beta.jboss.jms.api_2_0</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
                     <instructions>
-                        <Bundle-Version>${spec.bundle.version}</Bundle-Version>
-                        <Bundle-SymbolicName>${spec.bundle.symbolic-name}</Bundle-SymbolicName>
+                        <Bundle-Version>${version}</Bundle-Version>
+                        <Bundle-SymbolicName>${groupId}.${artifactId}</Bundle-SymbolicName>
                         <Extension-Name>${spec.extension.name}</Extension-Name>
-                        <Implementation-Version>${spec.implementation.version}</Implementation-Version>
-                        <Specification-Version>${spec.specification.version}</Specification-Version>
+                        <Implementation-Version>${version}</Implementation-Version>
+                        <Specification-Version>${spec.version}</Specification-Version>
                         <Bundle-Description>
                             Jakarta Messaging ${spec.version} Specification
                         </Bundle-Description>
-                        <Implementation-Vendor-Id>org.eclipse.ee4j.jms</Implementation-Vendor-Id>
+                        <Implementation-Vendor-Id>${groupId}</Implementation-Vendor-Id>
                         <Specification-Vendor>Eclipse Foundation</Specification-Vendor>
+                        <Specification-Title>${spec.title}</Specification-Title>
+                        <Implementation-Title>${spec.title}</Implementation-Title>
+                        <!-- Set the package version to match the spec version -->
+                        <Export-Package>
+                            javax.jms*;version=2.0
+                        </Export-Package>
                     </instructions>
                 </configuration>
                 <executions>
